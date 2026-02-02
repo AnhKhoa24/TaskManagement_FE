@@ -1,0 +1,69 @@
+<div class="p-6 max-w-4xl mx-auto">
+   <div class="flex justify-between mb-4">
+      <h1 class="text-xl font-semibold">Task List</h1>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="openAdd()">
+         + Add
+      </button>
+   </div>
+
+
+   <table class="w-full border">
+      <thead class="bg-gray-100">
+         <tr>
+            <th class="border p-2 text-left">Title</th>
+            <th class="border p-2">Status</th>
+            <th class="border p-2 w-32">Action</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let t of tasks()">
+            <td class="border p-2">{{ t.title }}</td>
+            <td class="border p-2 text-center">{{ t.status }}</td>
+            <td class="border p-2 text-center">
+               <button class="text-blue-600 mr-2" (click)="openEdit(t)">Edit</button>
+               <button class="text-red-600" (click)="delete(t.id)">Delete</button>
+            </td>
+         </tr>
+      </tbody>
+   </table>
+</div>
+
+
+
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-black/40 flex items-center justify-center">
+   <div class="bg-white w-96 p-6 rounded">
+      <h2 class="font-semibold mb-4">
+         {{ isEditMode ? 'Edit Task' : 'Add Task' }}
+      </h2>
+
+      <div class="mb-3">
+         <label for="title" class="block text-sm">Title *</label>
+         <input id="title" class="w-full border px-2 py-1 rounded" [(ngModel)]="form.title" />
+
+         <p class="text-red-600 text-sm" *ngIf="errorTitle">
+            {{ errorTitle }}
+         </p>
+      </div>
+
+      <label for="description" class="block text-sm">Description</label>
+      <textarea id="description" class="w-full border px-2 py-1 rounded" [(ngModel)]="form.description"></textarea>
+
+
+      <label for="status" class="block text-sm">Status</label>
+      <select id="status" class="w-full border px-2 py-1 rounded" [(ngModel)]="form.status">
+         <option *ngFor="let s of statuses" [value]="s">
+            {{ s }}
+         </option>
+      </select>
+
+
+      <div class="flex justify-end gap-2">
+         <button class="border px-3 py-1 rounded" (click)="closeModal()">
+            Cancel
+         </button>
+         <button class="bg-blue-600 text-white px-3 py-1 rounded" (click)="save()">
+            Save
+         </button>
+      </div>
+   </div>
+</div>
